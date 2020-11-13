@@ -1,8 +1,13 @@
 from redis import Redis
-
 from ip2geotools.databases.noncommercial import DbIpCity
 
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+
 r = Redis()
+
+longitudes =[]
+latitudes = []
 
 
 def file_to_redis(filename):
@@ -23,30 +28,29 @@ def pop_ips_to_long_lat():
     return response.latitude, response.longitude
 
 
+def plot_point(longitude, latitude):
+    if  longitude is not None or latitude is not None:
+        latitudes.append(float(latitude))
+        longitudes.append(float(longitude))
+        plt.scatter(longitudes, latitudes, c='red')
+
+
 if __name__ == '__main__':
     file_to_redis("BlockedIPs.txt")
+    plt.ion()
+    plt.show()
     while r.llen("iplist") != 0:
-        print(pop_ips_to_long_lat())
+        longitude, latitude = pop_ips_to_long_lat()
+        print(latitudes)
+        print(longitudes)
+        plot_point(longitude, latitude)
+        plt.draw()
+        plt.pause(0.001)
+        print('plotted')
+    plt.savefig('plot.png')
 
-# import socket
-# import sys
 
-# # 10.230.1.59
-# # Create a TCP/IP socket for receiving data
-# RCV_UDP_IP = "10.230.1.59"
-# RCV_UDP_PORT = 5140
-#
-# # Bind the socket to the port
-# rcv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
-# rcv_sock.bind((RCV_UDP_IP, RCV_UDP_PORT))
-#
-# while True:
-#     # Receive message
-#     data, address = rcv_sock.recvfrom(1024)
-#
-#     # Parse original message and create a new one
-#     # syslogmsg = data.split(",")
-#     # print >> sys.stderr, syslogmsg
-#     print(data, address)
-#
-#     # Instead of print, push into list on Redis
+
+
+
+
