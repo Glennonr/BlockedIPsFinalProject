@@ -1,9 +1,5 @@
-import os
-
 from redis import Redis
 from ip2geotools.databases.noncommercial import DbIpCity
-
-
 import matplotlib.pyplot as plt
 
 r = Redis()
