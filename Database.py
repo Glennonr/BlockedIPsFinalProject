@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 
 r = Redis()
 
-longitudes = []
-latitudes = []
 
 
 def file_to_redis(filename):
@@ -26,9 +24,7 @@ def pop_ips_to_long_lat():
 
 def plot_point(longitude, latitude):
     if longitude is not None or latitude is not None:
-        latitudes.append(float(latitude))
-        longitudes.append(float(longitude))
-        plt.scatter(longitudes, latitudes, c='red', alpha=0.25, s=10)
+        plt.scatter(float(longitude), float(latitude), c='red', alpha=0.5, s=10)
 
 
 if __name__ == '__main__':
@@ -39,10 +35,6 @@ if __name__ == '__main__':
     plt.show()
     while r.llen("iplist") != 0:
         longitude, latitude = pop_ips_to_long_lat()
-        print(latitudes)
-        print(longitudes)
         plot_point(latitude, longitude)
         plt.show()
         plt.pause(0.001)
-        print('plotted')
-    plt.savefig('plot.png')

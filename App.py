@@ -13,6 +13,8 @@ def get_from_redis():
     out = {'ips': out_ipList}
     while r.llen("iplist") != 0:
         ip = (r.lpop("iplist")).decode()
+        if len(out_ipList) > 20:
+            out_ipList.remove(out_ipList[0])
         out_ipList.append(ip)
     return jsonify(out), 200
 
