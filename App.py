@@ -5,18 +5,17 @@ r = Redis()
 
 app = Flask(__name__)
 
-out_ipList = []
-
 
 @app.route('/get', methods=["GET"])
 def get_from_redis():
-    out = {'ips': out_ipList}
-    while r.llen("iplist") != 0:
-        ip = (r.lpop("iplist")).decode()
-        if len(out_ipList) > 20:
-            out_ipList.remove(out_ipList[0])
-        out_ipList.append(ip)
-    return jsonify(out), 200
+    out_iplist = r.hkeys("iphash")
+    frick = []
+    for ip in out_iplist:
+        frick.append(ip.decode())
+    print(frick)
+    print(type(frick))
+    out = {'ips': frick}
+    return out, 200
 
 
 if __name__ == '__main__':

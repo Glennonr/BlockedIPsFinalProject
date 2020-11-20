@@ -19,8 +19,7 @@ def translate_ip_to_coordinates():
     try:
         response = DbIpCity.get(ip, api_key='free')
         return response.latitude, response.longitude
-
-    except KeyError:
+    except:
         return None, None
 
 
