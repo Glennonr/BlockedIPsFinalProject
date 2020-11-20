@@ -2,10 +2,9 @@ import requests
 from ip2geotools.databases.noncommercial import DbIpCity
 import matplotlib.pyplot as plt
 
-longitudes = []
-latitudes = []
-iplist = []
-old_list = []
+prev_longitudes = []
+prev_latitudes = []
+ip_list = []
 
 
 def get_from_flask():
@@ -15,40 +14,40 @@ def get_from_flask():
     return data['ips']
 
 
-def pop_ips_to_long_lat():
-    ip = iplist.pop()
+def translate_ip_to_coordinates():
+    ip = ip_list.pop()
     try:
         response = DbIpCity.get(ip, api_key='free')
         return response.latitude, response.longitude
+
     except KeyError:
         return None, None
 
 
-def plot_point(longitude, latitude):
-    if longitude is not None or latitude is not None:
-        plt.scatter(float(longitude), float(latitude), c='red', alpha=.75, s=10)
+def configure_map():
+    plt.ion()
+    img = plt.imread("RealisticMap.jpg")
+    plt.imshow(img, extent=[-180, 180, -90, 90])
+    plt.show()
 
 
 if __name__ == '__main__':
     while True:
-        iplist = get_from_flask()
-        plt.ion()
-        img = plt.imread("RealisticMap.jpg")
-        plt.imshow(img, extent=[-180, 180, -90, 90])
-        plt.show()
-        if len(longitudes) != 0 and len(latitudes) != 0:
-            plt.scatter(latitudes, longitudes, c='black', alpha=.75, s=10)
-            longitudes.clear()
-            latitudes.clear()
-        while len(iplist) != 0:
-            longitude, latitude = pop_ips_to_long_lat()
-            if latitude is not None and latitude is not None:
+        ip_list = get_from_flask()
+        configure_map()
+        plt.scatter(prev_latitudes, prev_longitudes, c='black', alpha=.75, s=10)
+        prev_latitudes.clear()
+        prev_longitudes.clear()
+
+        while len(ip_list) != 0:
+            longitude, latitude = translate_ip_to_coordinates()
+            if longitude is not None or latitude is not None:
                 print(latitude)
                 print(longitude)
-                longitudes.append(longitude)
-                latitudes.append(latitude)
-                plot_point(latitude, longitude)
+                prev_longitudes.append(longitude)
+                prev_latitudes.append(latitude)
+                plt.scatter(latitude, longitude, c='red', alpha=.75, s=10)
                 plt.show()
                 plt.pause(0.001)
-                print('plotted')
+
         plt.clf()
