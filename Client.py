@@ -34,7 +34,7 @@ if __name__ == '__main__':
     while True:
         ip_list = get_from_flask()
         configure_map()
-        plt.scatter(prev_latitudes, prev_longitudes, c='black', alpha=.75, s=10)
+        plt.scatter(prev_latitudes, prev_longitudes, c='red', alpha=.25, s=8)
         prev_latitudes.clear()
         prev_longitudes.clear()
 
