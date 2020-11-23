@@ -9,12 +9,11 @@ app = Flask(__name__)
 @app.route('/get', methods=["GET"])
 def get_from_redis():
     out_iplist = r.hkeys("iphash")
-    frick = []
+    decode_list = [x.decode('utf-8') for x in out_iplist]
     for ip in out_iplist:
-        frick.append(ip.decode())
-    print(frick)
-    print(type(frick))
-    out = {'ips': frick}
+        decode_list.append(ip.decode())
+
+    out = {'ips': str(out_iplist)}
     return out, 200
 
 
