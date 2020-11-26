@@ -1,6 +1,13 @@
 import time
 from redis import Redis
 
+"""
+Read the BlockedIPs file instead of using TZU real data. Speed is manageable and data is replicatable.
+Make a Redis hash with key ip and value is timestamp
+save HGETALL of hash to get a dict of the keys and values Evens would be keys (IP) Odd values (times)
+iterate over odds in list and if the time is a minute older than the recent attack_time HDEL the list item before it
+"""
+
 r = Redis()
 
 with open('blockedIPs.txt', 'r') as f:
@@ -19,8 +26,4 @@ with open('blockedIPs.txt', 'r') as f:
 
         time.sleep(0.5)
 
-"""
-Make a hash with key ip and value is timestamp
-save HGETALL of hash to get a dict of the keys and values Evens would be keys (IP) Odd values (times)
-iterate over odds in list and if the time is a minute older than the recent attack_time HDEL the list item before it
-"""
+

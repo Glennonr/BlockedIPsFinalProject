@@ -8,6 +8,10 @@ app = Flask(__name__)
 
 @app.route('/get', methods=["GET"])
 def get_from_redis():
+    """
+    Retrieves the iphash from redis with IP keys
+    :return: Json with key ips and data [decodeList] and status code 200
+    """
     iplist = r.hkeys("iphash")
     decode_list = [x.decode('utf-8') for x in iplist]
     out = {'ips': decode_list}

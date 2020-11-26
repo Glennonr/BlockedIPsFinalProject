@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 r = Redis()
 
 
-
 def file_to_redis(filename):
     with open(filename, 'r') as f:
         if r.llen('iplist') != 0:
