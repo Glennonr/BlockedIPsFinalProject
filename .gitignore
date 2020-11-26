@@ -1,3 +1,7 @@
 .idea
 venv
 __pycache__
+SamplePlot.py
+UDPStream.py
+Database.py
+.rdb
