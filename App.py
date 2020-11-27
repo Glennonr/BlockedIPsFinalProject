@@ -14,8 +14,7 @@ def get_from_redis():
     """
     iplist = r.hkeys("iphash")
     decode_list = [x.decode('utf-8') for x in iplist]
-    out = {'ips': decode_list}
-    return jsonify(out), 200
+    return jsonify({'ips': decode_list}), 200
 
 
 if __name__ == '__main__':
