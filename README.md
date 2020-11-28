@@ -13,7 +13,7 @@ Program to visualize the attempts to enter the Moravian College Firewall from ar
 - Requests
 - MatplotLib
 
-## How to use: 
+## How to Use: 
 
 1. In a terminal window, run `redis-server`
 2. Run the `MockCollector.py` file
@@ -21,6 +21,6 @@ Program to visualize the attempts to enter the Moravian College Firewall from ar
 4. Run the `Client.py` file, a python window should open with a map plotting the attempts
 
 
-## Testing
+## Testing:
 
 To run the tests in the test file, a redis-server must be running in the background. Run with a pytest configuration
